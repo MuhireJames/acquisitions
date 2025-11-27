@@ -1,8 +1,8 @@
 import 'dotenv/config';
 
 export default {
-  schema: './src/models/*.js', // Your schema file path
-  out: './drizzle', // Your migrations folder
+  schema: './src/models/*.js',
+  out: './drizzle', 
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL,
