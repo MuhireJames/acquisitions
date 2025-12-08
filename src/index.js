@@ -3,11 +3,23 @@ import logger from './config/logger.js';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+// import { rateLimit } from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
+import securityMiddleware from './middleware/security.middleware.js';
 
 
 const app = express();
+
+
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, 
+//   limit: 5,
+//   message: 'Too many requests from this IP, please try again later.',
+// });
+
+
+
 
 
 app.use(helmet());
@@ -21,6 +33,9 @@ app.use(morgan('combined', {
     write: (message) => logger.info(message.trim()),
   },
 }));
+// app.use(limiter);
+app.use(securityMiddleware);
+
 
 
 app.get('/', (req, res) => {
@@ -35,7 +50,9 @@ app.get('/api', (req, res) => {
   res.status(200).json({ message: 'Acquisition API is running' });
 });
 
+
 app.use('/api/auth',authRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 
